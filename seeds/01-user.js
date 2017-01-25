@@ -6,12 +6,12 @@ exports.seed = function(knex, Promise) {
         .then(function() {
             const users = [{
                 id: 1,
-                email: 'joe@crabshack.com',
-                password: bcrypt.hash('password54321', 8)
+                email: 'test1@test1.com',
+                password: bcrypt.hashSync('password123', 10)
             }, {
                 id: 2,
-                email: 'ralph@crabshack.com',
-                password: bcrypt.hash('password12345', 8)
+                email: 'test2@test2.com',
+                password: bcrypt.hashSync('password246', 10)
             }]
             return knex('user').insert(users);
         });
