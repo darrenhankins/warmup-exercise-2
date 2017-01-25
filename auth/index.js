@@ -15,8 +15,9 @@ router.post('/signup', (req, res, next) => {
         query.findUserByEmail(req.body.email)
             .then(user => {
                 if (user) {
+                  console.log(user.password);
                   // user exists in db
-                    console.log("user exists");
+                    console.log("User already exists");
                 } else {
                   // user not in db
                   const user = {
@@ -33,14 +34,26 @@ router.post('/signup', (req, res, next) => {
                 }
             });
     } else {
-        next(new Error('invalid user'));
+        next(new Error('Invalid User'));
     }
 });
 
 router.post('/login', (req, res, next) => {
-    console.log(req.body);
-    console.log("login");
-
+    if (validUser(req.body)) {
+      query.findUserByEmail(req.body.email)
+      .then( user => {
+        if (user){
+          res.json(user);
+          bcrypt.compare(req.body.password, user.password, function(err, res) {
+            if (res == true) {
+              console.log("User Logged In");
+            } else {
+              console.log("Wrong Password");
+            }
+          });
+        }
+      });
+    }
 })
 
 module.exports = router;
